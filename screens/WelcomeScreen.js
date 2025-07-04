@@ -47,6 +47,7 @@ const WelcomeScreen = ({ onStartSurvey, hasPlayedToday, setQuestions }) => {
           </Text>
         </TouchableOpacity>
         
+        
         {/* Features */}
         <View style={styles.featuresContainer}>
           <View style={styles.featureCard}>
@@ -68,8 +69,9 @@ const WelcomeScreen = ({ onStartSurvey, hasPlayedToday, setQuestions }) => {
           </View>
         </View>
 
-        {/* Sample Questions Preview */}
+        
         <View style={{ marginBottom: 30 }}>
+          {/* Sample Questions Preview
           <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#f0f0f0', marginBottom: 15, textAlign: 'center' }}>
             The Battles That Started Wars:
           </Text>
@@ -95,7 +97,11 @@ const WelcomeScreen = ({ onStartSurvey, hasPlayedToday, setQuestions }) => {
             <Text style={{ fontSize: 14, color: '#a8a8a8', fontStyle: 'italic', textAlign: 'center' }}>
               "Who is stronger: Saitama vs Thanos?"
             </Text>
-          </View>
+          </View> */}
+
+<Text style={{ fontSize: 14, color: '#a8a8a8', fontStyle: 'italic', textAlign: 'center', marginTop: 10 }}>
+  All character names and trademarks are the property of their respective owners. This app is not affiliated with Marvel, DC, or any publisher.
+  </Text>
         </View>
       </View>
     </ScrollView>

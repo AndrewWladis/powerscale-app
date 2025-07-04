@@ -28,7 +28,7 @@ export default function App() {
         const lastPlayed = await AsyncStorage.getItem('lastPlayedDate');
         const today = new Date().toISOString().slice(0, 10);
         if (lastPlayed === today) {
-          //CHANGE THIS BEFORE COMMITT setHasPlayedToday(true);
+          setHasPlayedToday(true);
         } else {
           setHasPlayedToday(false);
         }

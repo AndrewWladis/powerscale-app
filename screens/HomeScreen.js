@@ -132,8 +132,9 @@ const HomeScreen = ({ onCompleteSurvey, setQuestions, questions }) => {
         {/* Options */}
         <View style={styles.optionsContainer}>
           <ImageBackground
-            source={{ uri: currentQ.character1.image }}
-            style={[styles.optionButton, { borderTopStartRadius: 12, borderTopEndRadius: 12, borderBottomWidth: 0, overflow: 'hidden'}]}
+            //source={{ uri: currentQ.character1.image }}
+            source={{ uri: "" }}
+            style={[styles.optionButton, { borderTopStartRadius: 12, borderTopEndRadius: 12, borderBottomWidth: 3, borderBottomColor: '#f0f0f0', overflow: 'hidden'}]}
             imageStyle={{ borderTopLeftRadius: 12, borderTopRightRadius: 12 }}
           >
             <TouchableOpacity
@@ -147,7 +148,8 @@ const HomeScreen = ({ onCompleteSurvey, setQuestions, questions }) => {
           </ImageBackground>
 
           <ImageBackground
-            source={{ uri: currentQ.character2.image }}
+            //source={{ uri: currentQ.character2.image }}
+            source={{ uri: "" }}
             style={[styles.optionButton, { borderBottomStartRadius: 12, borderBottomEndRadius: 12, borderTopWidth: 0 }]}
             imageStyle={{ borderBottomLeftRadius: 12, borderBottomRightRadius: 12 }}
           >
