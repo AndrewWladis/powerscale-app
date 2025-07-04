@@ -1,12 +1,11 @@
 import { View, Text, TouchableOpacity, ScrollView, Share } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import styles from '../styles'
 
 const ResultsScreen = ({ results, onBackToWelcome, questions }) => {
-  const surveyQuestions = questions;
   // Early return if no questions or results
-  if (!surveyQuestions.length || !results) {
-    console.log(surveyQuestions)
+  if (!questions.length || !results) {
+    console.log(questions)
     return (
       <View style={{ flex: 1, backgroundColor: '#1a1a2e', justifyContent: 'center', alignItems: 'center' }}>
         <Text style={{ color: '#f0f0f0', fontSize: 18 }}>Loading results...</Text>
@@ -18,13 +17,13 @@ const ResultsScreen = ({ results, onBackToWelcome, questions }) => {
     let totalAgreement = 0
     Object.keys(results.answers).forEach(questionIndex => {
       const userAnswer = results.answers[questionIndex]
-      const question = surveyQuestions[questionIndex]
-      const totalVotes = question.votesA + question.votesB
+      const question = questions[questionIndex]
+      const totalVotes = question.character1Votes + question.character2Votes
       
-      if (userAnswer === 'A') {
-        totalAgreement += (question.votesA / totalVotes) * 100
+      if (userAnswer === 'character1') {
+        totalAgreement += (question.character1Votes / totalVotes) * 100
       } else {
-        totalAgreement += (question.votesB / totalVotes) * 100
+          totalAgreement += (question.character2Votes / totalVotes) * 100
       }
     })
     return totalAgreement
@@ -32,13 +31,6 @@ const ResultsScreen = ({ results, onBackToWelcome, questions }) => {
 
   const averageAgreement = getAgreementScore()
   const overallPercentage = Math.round(averageAgreement / results.totalQuestions)
-
-  const getScoreMessage = () => {
-    if (overallPercentage >= 80) return "Community Consensus Master! 🏆"
-    if (overallPercentage >= 60) return "Popular Opinion Leader! ⚡"
-    if (overallPercentage >= 40) return "Controversial Thinker! 🔥"
-    return "Rebel Scaler! 🌱"
-  }
 
   const getScoreColor = () => {
     if (overallPercentage >= 80) return "#4CAF50"
@@ -48,13 +40,13 @@ const ResultsScreen = ({ results, onBackToWelcome, questions }) => {
   }
 
   const getAgreementPercentage = (questionIndex, userAnswer) => {
-    const question = surveyQuestions[questionIndex]
-    const totalVotes = question.votesA + question.votesB
+    const question = questions[questionIndex]
+    const totalVotes = question.character1Votes + question.character2Votes
     
-    if (userAnswer === 'A') {
-      return Math.round((question.votesA / totalVotes) * 100)
+    if (userAnswer === 'character1') {
+      return Math.round((question.character1Votes / totalVotes) * 100)
     } else {
-      return Math.round((question.votesB / totalVotes) * 100)
+      return Math.round((question.character2Votes / totalVotes) * 100)
     }
   }
 
@@ -65,15 +57,46 @@ const ResultsScreen = ({ results, onBackToWelcome, questions }) => {
     return "#F44336"
   }
 
+  useEffect(() => {
+fetch("https://updatevotes-7mlmcpjeua-uc.a.run.app/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        votes: [
+          { pairNumber: 1, winner: results.answers[0] },
+          { pairNumber: 2, winner: results.answers[1] },
+          { pairNumber: 3, winner: results.answers[2] },
+          { pairNumber: 4, winner: results.answers[3] },
+          { pairNumber: 5, winner: results.answers[4] }
+        ]
+      })
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log("Votes successfully sent:", data);
+      })
+      .catch(error => {
+        console.error("Error sending votes:", error);
+      });
+    
+  }, [results])
+
   const handleShare = async () => {
     try {
       const shareMessage = `🎯 Powerscaler Results:\n ${overallPercentage}% community agreement!\n\n` +
         `My power scaling opinions:\n` +
         Object.keys(results.answers).map((questionIndex) => {
-          const question = surveyQuestions[questionIndex]
+          const question = questions[questionIndex]
           const userAnswer = results.answers[questionIndex]
           const agreementPercentage = getAgreementPercentage(questionIndex, userAnswer)
-          return `• ${userAnswer === 'A' ? question.optionA : question.optionB} beats ${userAnswer === 'A' ? question.optionB : question.optionA} (${agreementPercentage}% agree)`
+          return `• ${userAnswer === 'character1' ? question.character1.name : question.character2.name} beats ${userAnswer === 'character1' ? question.character2.name : question.character1.name} (${agreementPercentage}% agree)`
         }).join('\n') +
         `\n\nPowerscaler now available on iOS!`
 
@@ -88,23 +111,22 @@ const ResultsScreen = ({ results, onBackToWelcome, questions }) => {
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: '#1a1a2e' }}>
-      <View style={{ padding: 20, minHeight: '100%' }}>
+      <View style={{ padding: 20, minHeight: '100%', marginTop: 40 }}>
         {/* Score Card */}
         <View style={{
           backgroundColor: '#16213e',
           padding: 25,
           borderRadius: 15,
-          marginTop: 35,
           marginBottom: 10,
           alignItems: 'center',
           borderWidth: 2,
           borderColor: '#0f3460'
         }}>
-          <Text style={{ fontSize: 48, fontWeight: 'bold', color: getScoreColor(), marginBottom: 10 }}>
-            {overallPercentage}%
+          <Text style={{ fontSize: 48, fontWeight: '700', color: getScoreColor(), marginBottom: 10 }}>
+            {100 - overallPercentage}%
           </Text>
-          <Text style={{ fontSize: 20, color: '#f0f0f0', marginBottom: 5 }}>
-            Average community agreement
+          <Text style={{ fontSize: 20, color: getScoreColor(), marginBottom: 5, fontFamily: 'bike' }}>
+            Hot Take Rating
           </Text>
         </View>
         <Text style={{ fontSize: 16, color: '#f0f0f0', textAlign: 'center' }}>
@@ -114,7 +136,7 @@ const ResultsScreen = ({ results, onBackToWelcome, questions }) => {
         {/* Detailed Results */}
         <View style={{ marginBottom: 20, marginTop: 10 }}>
           {Object.keys(results.answers).map((questionIndex) => {
-            const question = surveyQuestions[questionIndex]
+            const question = questions[questionIndex]
             const userAnswer = results.answers[questionIndex]
             const agreementPercentage = getAgreementPercentage(questionIndex, userAnswer)
             const agreementColor = getAgreementColor(agreementPercentage)
@@ -129,7 +151,7 @@ const ResultsScreen = ({ results, onBackToWelcome, questions }) => {
                 borderLeftColor: agreementColor
               }}>
                 <Text style={styles.resultText}>
-                  <Text style={{ fontWeight: 'bold', fontFamily: 'bike' }}>{userAnswer === 'A' ? question.optionA : question.optionB}</Text> beats <Text style={{ fontWeight: 'bold', fontFamily: 'bike' }}>{userAnswer === 'A' ? question.optionB : question.optionA}</Text>
+                  <Text style={{ fontWeight: 'bold', fontFamily: 'bike' }}>{userAnswer === 'character1' ? question.character1.name : question.character2.name}</Text> beats <Text style={{ fontWeight: 'bold', fontFamily: 'bike' }}>{userAnswer === 'character1' ? question.character2.name : question.character1.name}</Text>
                 </Text>
                 <Text style={[styles.resultPercentageText, { color: agreementColor }]}>
                   {agreementPercentage}% of people agree with you

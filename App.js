@@ -28,7 +28,7 @@ export default function App() {
         const lastPlayed = await AsyncStorage.getItem('lastPlayedDate');
         const today = new Date().toISOString().slice(0, 10);
         if (lastPlayed === today) {
-          setHasPlayedToday(true);
+          //CHANGE THIS BEFORE COMMITT setHasPlayedToday(true);
         } else {
           setHasPlayedToday(false);
         }
@@ -63,11 +63,6 @@ export default function App() {
     } catch (e) {}
   };
 
-  const handleRetakeSurvey = () => {
-    setSurveyResults(null);
-    setScreen('home');
-  };
-
   const handleBackToWelcome = () => {
     setSurveyResults(null);
     setScreen('welcome');
@@ -86,9 +81,9 @@ export default function App() {
   const renderScreen = () => {
     switch (screen) {
       case 'welcome':
-        return <WelcomeScreen onStartSurvey={handleStartSurvey} hasPlayedToday={hasPlayedToday} />;
+        return <WelcomeScreen setQuestions={setQuestions} questions={questions} onStartSurvey={handleStartSurvey} hasPlayedToday={hasPlayedToday} />;
       case 'home':
-        return <HomeScreen onCompleteSurvey={handleCompleteSurvey} setQuestions={setQuestions} />;
+        return <HomeScreen questions={questions} onCompleteSurvey={handleCompleteSurvey} setQuestions={setQuestions} />;
       case 'results':
         return <ResultsScreen questions={questions} results={surveyResults} onBackToWelcome={handleBackToWelcome} />;
       case 'noInternet':

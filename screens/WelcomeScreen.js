@@ -2,7 +2,18 @@ import { View, Text, TouchableOpacity, ScrollView, Alert } from 'react-native'
 import styles from '../styles'
 import React, { useEffect } from 'react'
 
-const WelcomeScreen = ({ onStartSurvey, hasPlayedToday = false }) => {
+const WelcomeScreen = ({ onStartSurvey, hasPlayedToday, setQuestions }) => {
+  useEffect(() => {
+    fetch('https://gettodaymatches-7mlmcpjeua-uc.a.run.app')
+    .then(response => response.json())
+    .then(data => {
+      setQuestions(data.data.pairs)
+    })
+    .catch(error => {
+      console.error('Error fetching questions:', error)
+    })
+  }, [])
+
   return (
     <ScrollView style={{ flex: 1, backgroundColor: '#1a1a2e' }}>
       <View style={{ padding: 20, minHeight: '100%', marginTop: 20, justifyContent: 'center' }}>

@@ -125,6 +125,7 @@ const styles = StyleSheet.create({
       color: '#f0f0f0',
       marginBottom: 3,
       fontFamily: 'bike',
+      textAlign: 'center',
     },
     universeText: {
       fontSize: 15,

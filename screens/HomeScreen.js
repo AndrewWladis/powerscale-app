@@ -2,15 +2,12 @@ import { View, Text, TouchableOpacity, ScrollView, Alert, ImageBackground } from
 import React, { useState, useEffect } from 'react'
 import styles from '../styles'
 
-const HomeScreen = ({ onCompleteSurvey, setQuestions }) => {
+const HomeScreen = ({ onCompleteSurvey, setQuestions, questions }) => {
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [answers, setAnswers] = useState({})
 
-  useEffect(() => {
-    setQuestions(surveyQuestions)
-  }, [])
 
-  const surveyQuestions = [
+  /*const surveyQuestions = [
     {
       id: 1,
       question: "Who would win in a fight?",
@@ -71,18 +68,18 @@ const HomeScreen = ({ onCompleteSurvey, setQuestions }) => {
       imageA: "https://link-to-luffy-image.png",
       imageB: "https://link-to-zoro-image.png"
     }
-  ]
+  ]*/
 
   const handleAnswer = (answer) => {
     const newAnswers = { ...answers, [currentQuestion]: answer }
     setAnswers(newAnswers)
     
-    if (currentQuestion < surveyQuestions.length - 1) {
+    if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1)
     } else {
       // Survey completed
       const results = {
-        totalQuestions: surveyQuestions.length,
+        totalQuestions: questions.length,
         answers: newAnswers,
         completedAt: new Date().toISOString()
       }
@@ -91,10 +88,10 @@ const HomeScreen = ({ onCompleteSurvey, setQuestions }) => {
   }
 
   const getProgressPercentage = () => {
-    return ((currentQuestion + 1) / surveyQuestions.length) * 100
+    return ((currentQuestion + 1) / questions.length) * 100
   }
 
-  const currentQ = surveyQuestions[currentQuestion]
+  const currentQ = questions[currentQuestion]
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: '#1a1a2e' }}>
@@ -106,7 +103,7 @@ const HomeScreen = ({ onCompleteSurvey, setQuestions }) => {
         <View style={{ marginVertical: 20 }}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
             <Text style={styles.questionNumber}>
-              Question {currentQuestion + 1} of {surveyQuestions.length}
+              Question {currentQuestion + 1} of {questions.length}
             </Text>
             <Text style={styles.progressPercentage}>
               {Math.round(getProgressPercentage())}%
@@ -135,32 +132,32 @@ const HomeScreen = ({ onCompleteSurvey, setQuestions }) => {
         {/* Options */}
         <View style={styles.optionsContainer}>
           <ImageBackground
-            source={{ uri: currentQ.imageA }}
+            source={{ uri: currentQ.character1.image }}
             style={[styles.optionButton, { borderTopStartRadius: 12, borderTopEndRadius: 12, borderBottomWidth: 0, overflow: 'hidden'}]}
             imageStyle={{ borderTopLeftRadius: 12, borderTopRightRadius: 12 }}
           >
             <TouchableOpacity
               style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.45)', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', borderTopLeftRadius: 12, borderTopRightRadius: 12 }}
-              onPress={() => handleAnswer('A')}
+              onPress={() => handleAnswer("character1")}
               activeOpacity={0.7}
             >
-              <Text style={styles.optionText}>{currentQ.optionA}</Text>
-              <Text style={styles.universeText}>{currentQ.universeA}</Text>
+              <Text style={styles.optionText}>{currentQ.character1.name}</Text>
+              <Text style={styles.universeText}>{currentQ.character1.universe}</Text>
             </TouchableOpacity>
           </ImageBackground>
 
           <ImageBackground
-            source={{ uri: currentQ.imageB }}
+            source={{ uri: currentQ.character2.image }}
             style={[styles.optionButton, { borderBottomStartRadius: 12, borderBottomEndRadius: 12, borderTopWidth: 0 }]}
             imageStyle={{ borderBottomLeftRadius: 12, borderBottomRightRadius: 12 }}
           >
             <TouchableOpacity
               style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.45)', justifyContent: 'center', alignItems: 'center', borderBottomLeftRadius: 12, borderBottomRightRadius: 12, width: '100%', height: '99%' }}
-              onPress={() => handleAnswer('B')}
+              onPress={() => handleAnswer("character2")}
               activeOpacity={0.7}
             >
-              <Text style={styles.optionText}>{currentQ.optionB}</Text>
-              <Text style={styles.universeText}>{currentQ.universeB}</Text>
+              <Text style={styles.optionText}>{currentQ.character2.name}</Text>
+              <Text style={styles.universeText}>{currentQ.character2.universe}</Text>
             </TouchableOpacity>
           </ImageBackground>
         </View>
