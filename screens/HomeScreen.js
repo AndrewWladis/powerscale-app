@@ -1,9 +1,14 @@
-import { View, Text, TouchableOpacity, ScrollView, Alert } from 'react-native'
-import React, { useState } from 'react'
+import { View, Text, TouchableOpacity, ScrollView, Alert, ImageBackground } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import styles from '../styles'
 
-const HomeScreen = ({ onCompleteSurvey, onBackToWelcome }) => {
+const HomeScreen = ({ onCompleteSurvey, setQuestions }) => {
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [answers, setAnswers] = useState({})
+
+  useEffect(() => {
+    setQuestions(surveyQuestions)
+  }, [])
 
   const surveyQuestions = [
     {
@@ -12,7 +17,11 @@ const HomeScreen = ({ onCompleteSurvey, onBackToWelcome }) => {
       optionA: "Goku",
       optionB: "Superman",
       universeA: "Dragon Ball",
-      universeB: "Superman (2025)"
+      universeB: "Superman (2025)",
+      votesA: 344,
+      votesB: 234,
+      imageA: "https://static0.gamerantimages.com/wordpress/wp-content/uploads/2024/11/goku-dragon-ball.jpg",
+      imageB: "https://www.usatoday.com/gcdn/authoring/authoring-images/2025/01/07/USAT/77507566007-superman-exclusive.jpg"
     },
     {
       id: 2,
@@ -20,15 +29,23 @@ const HomeScreen = ({ onCompleteSurvey, onBackToWelcome }) => {
       optionA: "Saitama",
       optionB: "Thanos",
       universeA: "One Punch Man",
-      universeB: "Avengers: Infinity War"
+      universeB: "Avengers: Infinity War",
+      votesA: 101,
+      votesB: 100,
+      imageA: "https://christandpopculture.com/wp-content/uploads/2017/06/HorribleSubs-One-Punch-Man-05-1080p.mkv0079.jpg",
+      imageB: "https://pyxis.nymag.com/v1/imgs/3d4/0aa/89125115b0e10b94e3378d484712450727-25-thanos.rsocial.w1200.jpg"
     },
     {
       id: 3,
       question: "Who would emerge victorious?",
       optionA: "Naruto",
-      optionB: "Ichigo",
+      optionB: "Wally West",
       universeA: "Naruto",
-      universeB: "Bleach"
+      universeB: "DC Comics",
+      votesA: 3422,
+      votesB: 2321,
+      imageA: "https://wallpapersok.com/images/hd/uzumaki-naruto-hd-p23c4c3xyjkcnp6r.jpg",
+      imageB: "https://i.ytimg.com/vi/fk9MXzX7U4M/hq720.jpg"
     },
     {
       id: 4,
@@ -36,7 +53,11 @@ const HomeScreen = ({ onCompleteSurvey, onBackToWelcome }) => {
       optionA: "All Might",
       optionB: "All For One",
       universeA: "My Hero Academia",
-      universeB: "My Hero Academia"
+      universeB: "My Hero Academia",
+      votesA: 10,
+      votesB: 123,
+      imageA: "https://link-to-allmight-image.png",
+      imageB: "https://link-to-allforone-image.png"
     },
     {
       id: 5,
@@ -44,7 +65,11 @@ const HomeScreen = ({ onCompleteSurvey, onBackToWelcome }) => {
       optionA: "Luffy",
       optionB: "Zoro",
       universeA: "One Piece",
-      universeB: "One Piece"
+      universeB: "One Piece",
+      votesA: 123,
+      votesB: 123,
+      imageA: "https://link-to-luffy-image.png",
+      imageB: "https://link-to-zoro-image.png"
     }
   ]
 
@@ -73,27 +98,21 @@ const HomeScreen = ({ onCompleteSurvey, onBackToWelcome }) => {
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: '#1a1a2e' }}>
-      <View style={{ padding: 20, minHeight: '100%' }}>
-        {/* Header */}
-        <View style={{ alignItems: 'center', marginBottom: 30 }}>
-          <Text style={{ fontSize: 28, fontWeight: 'bold', color: '#e94560', marginBottom: 10 }}>
-            PowerScale Survey
-          </Text>
-          <Text style={{ fontSize: 16, color: '#f0f0f0', textAlign: 'center' }}>
+      <View style={{ padding: 20, minHeight: '100%', marginTop: 35 }}>
+        <Text style={styles.gameSubtitle}>
             Who is stronger? Test your knowledge of fictional character power levels!
-          </Text>
-        </View>
-
+        </Text>
         {/* Progress Bar */}
-        <View style={{ marginBottom: 30 }}>
+        <View style={{ marginVertical: 20 }}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
-            <Text style={{ color: '#f0f0f0', fontSize: 16 }}>
+            <Text style={styles.questionNumber}>
               Question {currentQuestion + 1} of {surveyQuestions.length}
             </Text>
-            <Text style={{ color: '#e94560', fontSize: 16, fontWeight: 'bold' }}>
+            <Text style={styles.progressPercentage}>
               {Math.round(getProgressPercentage())}%
             </Text>
           </View>
+      
           <View style={{ height: 8, backgroundColor: '#16213e', borderRadius: 4 }}>
             <View 
               style={{ 
@@ -114,50 +133,36 @@ const HomeScreen = ({ onCompleteSurvey, onBackToWelcome }) => {
         </View>
 
         {/* Options */}
-        <View style={{ gap: 15 }}>
-          <TouchableOpacity
-            style={{
-              backgroundColor: '#16213e',
-              padding: 20,
-              borderRadius: 12,
-              borderWidth: 2,
-              borderColor: '#0f3460'
-            }}
-            onPress={() => handleAnswer('A')}
-            activeOpacity={0.7}
+        <View style={styles.optionsContainer}>
+          <ImageBackground
+            source={{ uri: currentQ.imageA }}
+            style={[styles.optionButton, { borderTopStartRadius: 12, borderTopEndRadius: 12, borderBottomWidth: 0, overflow: 'hidden'}]}
+            imageStyle={{ borderTopLeftRadius: 12, borderTopRightRadius: 12 }}
           >
-            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#e94560', marginBottom: 5 }}>
-              Option A
-            </Text>
-            <Text style={{ fontSize: 16, color: '#f0f0f0', marginBottom: 3 }}>
-              {currentQ.optionA}
-            </Text>
-            <Text style={{ fontSize: 12, color: '#a8a8a8', fontStyle: 'italic' }}>
-              {currentQ.universeA}
-            </Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.45)', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', borderTopLeftRadius: 12, borderTopRightRadius: 12 }}
+              onPress={() => handleAnswer('A')}
+              activeOpacity={0.7}
+            >
+              <Text style={styles.optionText}>{currentQ.optionA}</Text>
+              <Text style={styles.universeText}>{currentQ.universeA}</Text>
+            </TouchableOpacity>
+          </ImageBackground>
 
-          <TouchableOpacity
-            style={{
-              backgroundColor: '#16213e',
-              padding: 20,
-              borderRadius: 12,
-              borderWidth: 2,
-              borderColor: '#0f3460'
-            }}
-            onPress={() => handleAnswer('B')}
-            activeOpacity={0.7}
+          <ImageBackground
+            source={{ uri: currentQ.imageB }}
+            style={[styles.optionButton, { borderBottomStartRadius: 12, borderBottomEndRadius: 12, borderTopWidth: 0 }]}
+            imageStyle={{ borderBottomLeftRadius: 12, borderBottomRightRadius: 12 }}
           >
-            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#e94560', marginBottom: 5 }}>
-              Option B
-            </Text>
-            <Text style={{ fontSize: 16, color: '#f0f0f0', marginBottom: 3 }}>
-              {currentQ.optionB}
-            </Text>
-            <Text style={{ fontSize: 12, color: '#a8a8a8', fontStyle: 'italic' }}>
-              {currentQ.universeB}
-            </Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.45)', justifyContent: 'center', alignItems: 'center', borderBottomLeftRadius: 12, borderBottomRightRadius: 12, width: '100%', height: '99%' }}
+              onPress={() => handleAnswer('B')}
+              activeOpacity={0.7}
+            >
+              <Text style={styles.optionText}>{currentQ.optionB}</Text>
+              <Text style={styles.universeText}>{currentQ.universeB}</Text>
+            </TouchableOpacity>
+          </ImageBackground>
         </View>
 
         {/* Navigation */}
@@ -177,22 +182,6 @@ const HomeScreen = ({ onCompleteSurvey, onBackToWelcome }) => {
               </Text>
             </TouchableOpacity>
           )}
-          
-          <TouchableOpacity
-            style={{
-              backgroundColor: '#16213e',
-              padding: 15,
-              borderRadius: 8,
-              alignItems: 'center',
-              borderWidth: 2,
-              borderColor: '#0f3460'
-            }}
-            onPress={onBackToWelcome}
-          >
-            <Text style={{ color: '#f0f0f0', fontSize: 16, fontWeight: 'bold' }}>
-              Back to Welcome
-            </Text>
-          </TouchableOpacity>
         </View>
       </View>
     </ScrollView>

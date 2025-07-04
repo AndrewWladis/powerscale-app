@@ -8,11 +8,28 @@ import NoInternetScreen from './screens/NoInternetScreen';
 import ResultsScreen from './screens/ResultsScreen';
 import { useFonts } from 'expo-font';
 import { useEffect } from 'react';
+import * as Network from 'expo-network';
 import * as SplashScreen from 'expo-splash-screen';
 
 export default function App() {
   const [screen, setScreen] = useState('welcome');
+  const [questions, setQuestions] = useState(null);
   const [surveyResults, setSurveyResults] = useState(null);
+  const [isConnected, setIsConnected] = useState(true);
+
+  useEffect(() => {
+    const checkConnection = async () => {
+      const networkState = await Network.getNetworkStateAsync();
+      setIsConnected(networkState.isConnected);
+    };
+    checkConnection();
+  }, []);
+
+  useEffect(() => {
+    if (!isConnected) {
+      setScreen('noInternet');
+    }
+  }, [isConnected]);
 
   const handleStartSurvey = () => {
     setScreen('home');
@@ -51,13 +68,11 @@ export default function App() {
       case 'welcome':
         return <WelcomeScreen onStartSurvey={handleStartSurvey} />;
       case 'home':
-        return <HomeScreen onCompleteSurvey={handleCompleteSurvey} onBackToWelcome={handleBackToWelcome} />;
+        return <HomeScreen onCompleteSurvey={handleCompleteSurvey} setQuestions={setQuestions} />;
       case 'results':
-        return <ResultsScreen results={surveyResults} onRetakeSurvey={handleRetakeSurvey} onBackToWelcome={handleBackToWelcome} />;
-      case 'noInternet':
-        return <NoInternetScreen />;
+        return <ResultsScreen questions={questions} results={surveyResults} onRetakeSurvey={handleRetakeSurvey} onBackToWelcome={handleBackToWelcome} />;
       default:
-        return <WelcomeScreen onStartSurvey={handleStartSurvey} />;
+        return <NoInternetScreen />;
     }
   }
 

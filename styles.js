@@ -91,6 +91,56 @@ const styles = StyleSheet.create({
       textAlign: 'center',
       marginBottom: 20,
     },
+    gameSubtitle: {
+      fontSize: 16,
+      color: '#f0f0f0',
+      textAlign: 'center',
+      marginBottom: 10,
+    },
+    questionNumber: {
+      color: '#f0f0f0',
+      fontSize: 25,
+      fontWeight: 'bold',
+    },
+    progressPercentage: {
+      color: '#e94560',
+      fontSize: 25,
+      fontWeight: '900',
+    },
+    optionsContainer: {
+      borderRadius: 12,
+      borderWidth: 2,
+      borderColor: '#f0f0f0',
+      overflow: 'hidden',
+    },
+    optionButton: {
+      backgroundColor: '#16213e',
+      height: 200,
+      width: '100%',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    optionText: {
+      fontSize: 30,
+      color: '#f0f0f0',
+      marginBottom: 3,
+      fontFamily: 'bike',
+    },
+    universeText: {
+      fontSize: 15,
+      color: '#a8a8a8',
+      fontStyle: 'italic',
+    },
+    resultText: {
+      fontSize: 19,
+      color: '#f0f0f0',
+      marginBottom: 3,
+    },
+    resultPercentageText: {
+      fontSize: 20,
+      color: '#f0f0f0',
+      fontWeight: 'bold',
+    },
   });
 
   

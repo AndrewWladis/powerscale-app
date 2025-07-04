@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native'
 import styles from '../styles'
-import React from 'react'
+import React, { useEffect } from 'react'
 
 const WelcomeScreen = ({ onStartSurvey }) => {
   return (
@@ -9,7 +9,7 @@ const WelcomeScreen = ({ onStartSurvey }) => {
         {/* Header */}
         <View style={{ alignItems: 'center', marginBottom: 30 }}>
           <Text style={styles.title}>
-            Power{'\n'}scaler
+            POWER{'\n'}SCALER
           </Text>
           <Text style={{ fontSize: 18, color: '#f0f0f0', textAlign: 'center', marginBottom: 10 }}>
             Join the world's first and largest power scaling community!
@@ -76,14 +76,6 @@ const WelcomeScreen = ({ onStartSurvey }) => {
               "Who is stronger: Saitama vs Thanos?"
             </Text>
           </View>
-        </View>
-
-        {/* Disclaimer */}
-        <View style={{ padding: 15, backgroundColor: '#0f3460', borderRadius: 10 }}>
-          <Text style={{ fontSize: 12, color: '#a8a8a8', textAlign: 'center', fontStyle: 'italic' }}>
-            Disclaimer: Power scaling opinions are subjective and vary across the community. 
-            This game is for fun and community engagement!
-          </Text>
         </View>
       </View>
     </ScrollView>
