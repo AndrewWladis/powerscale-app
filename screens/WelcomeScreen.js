@@ -1,8 +1,8 @@
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native'
+import { View, Text, TouchableOpacity, ScrollView, Alert } from 'react-native'
 import styles from '../styles'
 import React, { useEffect } from 'react'
 
-const WelcomeScreen = ({ onStartSurvey }) => {
+const WelcomeScreen = ({ onStartSurvey, hasPlayedToday = false }) => {
   return (
     <ScrollView style={{ flex: 1, backgroundColor: '#1a1a2e' }}>
       <View style={{ padding: 20, minHeight: '100%', marginTop: 20, justifyContent: 'center' }}>
@@ -18,12 +18,21 @@ const WelcomeScreen = ({ onStartSurvey }) => {
 
         {/* Start Button */}
         <TouchableOpacity
-          style={styles.startButton}
-          onPress={onStartSurvey}
-          activeOpacity={0.7}
-          >
-            <Text style={[styles.startButtonText, { fontFamily: 'bike' }]}>
-            TODAY'S{'\n'}SHOWDOWN
+          style={[
+            styles.startButton,
+            hasPlayedToday && { backgroundColor: '#666', borderColor: '#888' }
+          ]}
+          onPress={hasPlayedToday ? () => {
+            Alert.alert(
+              "Come back tomorrow!",
+              "You can only do today's showdown once per day."
+            );
+          } : onStartSurvey}
+          activeOpacity={hasPlayedToday ? 1 : 0.7}
+          disabled={false}
+        >
+          <Text style={[styles.startButtonText, { fontFamily: 'bike' }]}>
+            {hasPlayedToday ? 'COME BACK\nTOMORROW' : 'TODAY\'S\nSHOWDOWN'}
           </Text>
         </TouchableOpacity>
         
