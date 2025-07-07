@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity, ScrollView, Alert } from 'react-native'
 import styles from '../styles'
 import React, { useEffect } from 'react'
 
-const WelcomeScreen = ({ onStartSurvey, hasPlayedToday, setQuestions }) => {
+const WelcomeScreen = ({ onStartSurvey, hasPlayedToday, setQuestions, setScreen }) => {
   useEffect(() => {
     fetch('https://gettodaymatches-7mlmcpjeua-uc.a.run.app')
     .then(response => response.json())
@@ -46,8 +46,15 @@ const WelcomeScreen = ({ onStartSurvey, hasPlayedToday, setQuestions }) => {
             {hasPlayedToday ? 'COME BACK\nTOMORROW' : 'TODAY\'S\nSHOWDOWN'}
           </Text>
         </TouchableOpacity>
-        
-        
+
+        {/* Character Explorer Button */}
+        <TouchableOpacity
+          style={[styles.characterExploreButton, { marginBottom: 20 }]}
+          onPress={() => setScreen('characterExplore')}
+          activeOpacity={0.7}
+        >
+          <Text style={styles.characterExploreButtonText}>Explore Characters</Text>
+        </TouchableOpacity> 
         {/* Features */}
         <View style={styles.featuresContainer}>
           <View style={styles.featureCard}>

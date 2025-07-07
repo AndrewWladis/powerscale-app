@@ -6,6 +6,7 @@ import WelcomeScreen from './screens/WelcomeScreen';
 import HomeScreen from './screens/HomeScreen';
 import NoInternetScreen from './screens/NoInternetScreen';
 import ResultsScreen from './screens/ResultsScreen';
+import CharacterExploreScreen from './screens/CharacterExploreScreen';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -81,15 +82,17 @@ export default function App() {
   const renderScreen = () => {
     switch (screen) {
       case 'welcome':
-        return <WelcomeScreen setQuestions={setQuestions} questions={questions} onStartSurvey={handleStartSurvey} hasPlayedToday={hasPlayedToday} />;
+        return <WelcomeScreen setQuestions={setQuestions} questions={questions} onStartSurvey={handleStartSurvey} hasPlayedToday={hasPlayedToday} setScreen={setScreen} />;
       case 'home':
         return <HomeScreen questions={questions} onCompleteSurvey={handleCompleteSurvey} setQuestions={setQuestions} />;
       case 'results':
         return <ResultsScreen questions={questions} results={surveyResults} onBackToWelcome={handleBackToWelcome} />;
+      case 'characterExplore':
+        return <CharacterExploreScreen setScreen={setScreen} />;
       case 'noInternet':
         return <NoInternetScreen />;
       default:
-        return <WelcomeScreen onStartSurvey={handleStartSurvey} hasPlayedToday={hasPlayedToday} />;
+        return <WelcomeScreen onStartSurvey={handleStartSurvey} hasPlayedToday={hasPlayedToday} setScreen={setScreen} />;
     }
   }
 
