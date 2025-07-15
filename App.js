@@ -10,6 +10,7 @@ import CharacterExploreScreen from './screens/CharacterExploreScreen';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Network from 'expo-network';
 
 export default function App() {
   const [screen, setScreen] = useState('welcome');
@@ -17,10 +18,31 @@ export default function App() {
   const [surveyResults, setSurveyResults] = useState(null);
   const [hasPlayedToday, setHasPlayedToday] = useState(false);
   const [checkingPlay, setCheckingPlay] = useState(true);
+  const [isConnected, setIsConnected] = useState(true);
 
   const [fontsLoaded] = useFonts({
     'bike': require('./assets/bike.otf'),
   });
+
+  // Check internet connectivity
+  useEffect(() => {
+    const checkConnectivity = async () => {
+      try {
+        const networkState = await Network.getNetworkStateAsync();
+        setIsConnected(networkState.isConnected);
+      } catch (error) {
+        setIsConnected(false);
+      }
+    };
+
+    // Initial check
+    checkConnectivity();
+
+    // Set up interval to check connectivity every 5 seconds
+    const interval = setInterval(checkConnectivity, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   // Check if user has played today
   useEffect(() => {
@@ -77,6 +99,16 @@ export default function App() {
 
   if (!fontsLoaded || checkingPlay) {
     return null;
+  }
+
+  // Show NoInternetScreen if no internet connection
+  if (!isConnected) {
+    return (
+      <View style={styles.container}>
+        <StatusBar style="light" />
+        <NoInternetScreen />
+      </View>
+    );
   }
 
   const renderScreen = () => {

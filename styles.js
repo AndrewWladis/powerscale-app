@@ -142,6 +142,58 @@ const styles = StyleSheet.create({
       color: '#f0f0f0',
       fontWeight: 'bold',
     },
+    characterExploreTitle: {
+      fontSize: 30,
+      color: '#f0f0f0',
+      fontWeight: '800',
+      textAlign: 'center',
+      fontFamily: 'bike',
+    },
+    characterExploreButton: {
+      backgroundColor: '#0f3460',
+      padding: 15,
+      borderRadius: 8,
+      alignItems: 'center',
+    },
+    characterExploreButtonText: {
+      color: '#f0f0f0',
+      fontSize: 25,
+      fontWeight: '900',
+      textAlign: 'center',
+      fontFamily: 'bike',
+    },
+    universeCard: {
+      backgroundColor: '#16213e',
+      padding: 20,
+      borderRadius: 15,
+      marginBottom: 15,
+      borderWidth: 2,
+      borderColor: '#0f3460',
+    },
+    universeCardText: {
+      color: '#f0f0f0',
+      fontSize: 25,
+      fontWeight: '900',
+      textAlign: 'center',
+      fontFamily: 'bike',
+    },
+    universeCardDescription: {
+      color: '#f0f0f0',
+      fontSize: 15,
+      textAlign: 'center',
+    },
+    universePowerRating: {
+      color: '#f0f0f0',
+      fontSize: 15,
+      textAlign: 'center',
+    },
+    universeCardTitle: {
+      color: '#f0f0f0',
+      fontSize: 25,
+      fontWeight: '900',
+      textAlign: 'center',
+      fontFamily: 'bike',
+    },
   });
 
   
